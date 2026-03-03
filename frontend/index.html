@@ -317,6 +317,7 @@
 
 
         #asset-move-panel { border:1px solid #334155; background:#0b1220; border-radius:10px; padding:10px; margin-bottom:10px; }
+        #asset-home-actions-panel { border:1px solid #334155; background:#0b1220; border-radius:10px; padding:10px; }
         #asset-move-row { justify-content: center; gap:12px; margin-bottom:0; }
         #asset-move-row .btn-move,
         #asset-move-row .btn-home,
@@ -1068,18 +1069,12 @@
                     <div class="asset-toolbar" id="asset-move-row">
                         <button id="btn-move-house" class="btn-move" onclick="generateRpgBackground()">📦 搬新家</button>
                         <button id="btn-back-home" class="btn-home" onclick="restoreHomeBackground()">🐚 回老家</button>
-                        <button id="btn-back-last-bg" class="btn-home" onclick="restoreLastGeneratedBackground()">↩️ 回上一次</button>
-                        <button id="btn-favorite-home" class="btn-home" onclick="saveCurrentHomeFavorite()">⭐ 收藏这个家</button>
                     </div>
                     <div class="asset-toolbar" id="asset-broker-row">
                         <button class="btn-broker" onclick="toggleBrokerPanel()">🤝 找中介</button>
                         <button id="btn-diy" class="btn-diy" onclick="toggleManualPanel()">🪚 自己装</button>
                     </div>
                     <div id="asset-move-result" class="asset-sub" style="margin-top:4px; margin-bottom:6px;"></div>
-                    <div id="asset-home-favorites" class="asset-preview-box" style="margin-top:8px;">
-                        <div id="asset-home-favorites-title" class="asset-preview-title">🏠 收藏的家</div>
-                        <div id="asset-home-favorites-list" class="home-fav-list"></div>
-                    </div>
                     <div id="asset-broker-panel">
                         <div class="asset-sub" style="margin-bottom:6px;">写你的风格主题（严格保持原始房间结构，只改变视觉风格）</div>
                         <textarea id="asset-broker-prompt" placeholder="例如：像素风赛博东京夜景，霓虹灯、雨夜地面反光、蓝紫主色"></textarea>
@@ -1105,6 +1100,18 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="asset-home-actions-panel" class="asset-preview-box" style="margin-bottom:10px;">
+                    <div class="asset-toolbar" style="margin-bottom:6px; gap:8px;">
+                        <button id="btn-back-last-bg" class="btn-home" onclick="restoreLastGeneratedBackground()">↩️ 回上一次</button>
+                        <button id="btn-favorite-home" class="btn-home" onclick="saveCurrentHomeFavorite()">⭐ 收藏这个家</button>
+                    </div>
+                    <div id="asset-home-favorites" class="asset-preview-box" style="margin:0;">
+                        <div id="asset-home-favorites-title" class="asset-preview-title">🏠 收藏的家</div>
+                        <div id="asset-home-favorites-list" class="home-fav-list"></div>
+                    </div>
+                </div>
+
                 <div id="asset-manual-panel">
                     <div class="asset-toolbar">
                         <input id="asset-search" placeholder="搜索资产名（如 desk / sofa / star）" oninput="renderAssetDrawerList()" />
