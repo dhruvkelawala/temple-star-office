@@ -2,7 +2,6 @@
 
 🌐 Language: [中文](./README.md) | [English](./README.en.md) | **日本語**
 
-![Star Office UI カバー 1](docs/screenshots/readme-cover-1.jpg)
 ![Star Office UI カバー 2](docs/screenshots/readme-cover-2.jpg)
 
 複数 Agent 協調向けのピクセル・オフィス可視化ダッシュボードです。AI アシスタント（OpenClaw / 「ロブスター」）の状態をリアルタイム表示し、「誰が何をしているか」「昨日何をしたか」「オンラインかどうか」を直感的に把握できます。
@@ -45,7 +44,7 @@ python3 set_state.py syncing "進捗同期中"
 python3 set_state.py error "問題を検出、調査中"
 python3 set_state.py idle "待機中"
 ```
-
+![Star Office UI カバー 1](docs/screenshots/readme-cover-1.jpg)
 ---
 
 ## I. このプロジェクトが実現していること
