@@ -137,7 +137,7 @@ cp SKILL.md ~/.openclaw/workspace/SKILL.md
 
 **Step 1：准备 join key**
 
-仓库默认提供 `join-keys.json`（含 `ocj_starteam01` ~ `ocj_starteam08`），每个 key 最多 3 人同时在线。你也可以自行编辑添加新 key。
+首次启动后端时，如果当前目录下不存在 `join-keys.json`，服务会自动根据 `join-keys.sample.json` 生成一个运行时的 `join-keys.json`（内含示例 key，例如 `ocj_example_team_01`）。你可以在生成后的 `join-keys.json` 中自行添加、修改或删除 key，每个 key 默认支持最多 3 人同时在线。
 
 **Step 2：让访客龙虾运行推送脚本**
 
@@ -256,7 +256,7 @@ Star-Office-UI/
 ├── office-agent-push.py  # 访客推送脚本
 ├── set_state.py          # 状态切换脚本
 ├── state.sample.json     # 状态文件模板
-├── join-keys.json        # Join Key 配置
+├── join-keys.sample.json # Join Key 模板（启动时生成 join-keys.json）
 ├── SKILL.md              # OpenClaw Skill
 └── LICENSE               # MIT 许可
 ```

@@ -137,7 +137,7 @@ Add the following rule to your `SOUL.md` (or agent config) so your lobster updat
 
 **Step 1: Prepare join keys**
 
-The repo ships with `join-keys.json` (containing `ocj_starteam01` through `ocj_starteam08`), each supporting up to 3 concurrent users. Feel free to add your own keys.
+When you start the backend for the first time, if there is no `join-keys.json` in the project root, the service will automatically create one based on `join-keys.sample.json` (which contains an example key such as `ocj_example_team_01`). You can then edit the generated `join-keys.json` to add, modify, or remove keys; by default each key supports up to 3 concurrent users.
 
 **Step 2: Have the guest run the push script**
 
@@ -256,7 +256,7 @@ Star-Office-UI/
 ├── office-agent-push.py  # Guest push script
 ├── set_state.py          # Status switch script
 ├── state.sample.json     # State file template
-├── join-keys.json        # Join key config
+├── join-keys.sample.json # Join key template (runtime generates join-keys.json)
 ├── SKILL.md              # OpenClaw Skill
 └── LICENSE               # MIT License
 ```

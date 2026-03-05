@@ -137,7 +137,7 @@ cp SKILL.md ~/.openclaw/workspace/SKILL.md
 
 **Step 1：join key を準備**
 
-リポジトリには `join-keys.json`（`ocj_starteam01` 〜 `ocj_starteam08`）が含まれており、各キーで最大 3 名まで同時接続可能。独自のキーを追加することもできます。
+バックエンドを初回起動するとき、カレントディレクトリに `join-keys.json` が存在しない場合は、`join-keys.sample.json` を元にランタイム用の `join-keys.json` が自動生成されます（例として `ocj_example_team_01` などのサンプル key が含まれます）。生成された `join-keys.json` を編集して key を追加・変更・削除できます。各 key はデフォルトで最大 3 名まで同時接続できます。
 
 **Step 2：ゲストにプッシュスクリプトを実行してもらう**
 
@@ -256,7 +256,7 @@ Star-Office-UI/
 ├── office-agent-push.py  # ゲストプッシュスクリプト
 ├── set_state.py          # ステータス切替スクリプト
 ├── state.sample.json     # 状態ファイルテンプレート
-├── join-keys.json        # Join Key 設定
+├── join-keys.sample.json # Join Key テンプレート（起動時に join-keys.json を生成）
 ├── SKILL.md              # OpenClaw Skill
 └── LICENSE               # MIT ライセンス
 ```
