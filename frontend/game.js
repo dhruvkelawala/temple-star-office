@@ -69,8 +69,8 @@ async function loadMemo() {
       memoContent.innerHTML = '<div id="memo-placeholder">No yesterday memo yet</div>';
     }
   } catch (e) {
-    console.error('加载 memo 失败:', e);
-    memoContent.innerHTML = '<div id="memo-placeholder">加载失败</div>';
+    console.error('Failed to load memo:', e);
+    memoContent.innerHTML = '<div id="memo-placeholder">Load failed</div>';
   }
 }
 
@@ -276,7 +276,7 @@ async function initGame() {
     }
   }
 
-  console.log('WebP 支持:', supportsWebP);
+  console.log('WebP support:', supportsWebP);
   new Phaser.Game(config);
 }
 
@@ -551,7 +551,7 @@ function create() {
   coordsToggle.addEventListener('click', () => {
     showCoords = !showCoords;
     coordsOverlay.style.display = showCoords ? 'block' : 'none';
-    coordsToggle.textContent = showCoords ? '隐藏坐标' : '显示坐标';
+    coordsToggle.textContent = showCoords ? 'Hide coords' : 'Show coords';
     coordsToggle.style.background = showCoords ? '#e94560' : '#333';
   });
 
@@ -588,7 +588,7 @@ function create() {
   if (debugAgents) {
     const testNika = {
       agentId: 'agent_nika',
-      name: '尼卡',
+      name: 'Nika',
       isMain: false,
       state: 'writing',
       detail: 'Drawing pixel art...',
@@ -605,7 +605,7 @@ function create() {
       window.testNikaState = states[Math.floor(Math.random() * states.length)];
       const testAgent = {
         agentId: 'agent_nika',
-        name: '尼卡',
+        name: 'Nika',
         isMain: false,
         state: window.testNikaState,
         detail: 'Drawing pixel art...',
@@ -937,7 +937,7 @@ function fetchAgents() {
       }
     })
     .catch(error => {
-      console.error('拉取 agents 失败:', error);
+      console.error('Failed to fetch agents:', error);
     });
 }
 

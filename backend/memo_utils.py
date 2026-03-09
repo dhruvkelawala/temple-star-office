@@ -19,13 +19,13 @@ def get_yesterday_date_str() -> str:
 
 def sanitize_content(text: str) -> str:
     """Redact PII and sensitive patterns (OpenID, paths, IPs, email, phone) for safe display."""
-    text = re.sub(r'ou_[a-f0-9]+', '[用户]', text)
-    text = re.sub(r'user_id="[^"]+"', 'user_id="[隐藏]"', text)
-    text = re.sub(r'/root/[^"\s]+', '[路径]', text)
+    text = re.sub(r'ou_[a-f0-9]+', '[user]', text)
+    text = re.sub(r'user_id="[^"]+"', 'user_id="[hidden]"', text)
+    text = re.sub(r'/root/[^"\s]+', '[path]', text)
     text = re.sub(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', '[IP]', text)
 
-    text = re.sub(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', '[邮箱]', text)
-    text = re.sub(r'1[3-9]\d{9}', '[手机号]', text)
+    text = re.sub(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', '[email]', text)
+    text = re.sub(r'1[3-9]\d{9}', '[phone]', text)
 
     return text
 
@@ -36,10 +36,10 @@ def extract_memo_from_file(file_path: str) -> str:
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        # 提取真实内容，不做过度包装
+        # Extract real content, no over-wrapping
         lines = content.strip().split("\n")
 
-        # 提取核心要点
+        # Extract key points
         core_points = []
         for line in lines:
             line = line.strip()
@@ -58,38 +58,38 @@ def extract_memo_from_file(file_path: str) -> str:
         # Extract key points from content 2-3 个关键点
         selected_points = core_points[:3]
 
-        # 睿智语录库
+        # Wisdom quotes
         wisdom_quotes = [
-            "「工欲善其事，必先利其器。」",
-            "「不积跬步，无以至千里；不积小流，无以成江海。」",
-            "「知行合一，方可致远。」",
-            "「业精于勤，荒于嬉；行成于思，毁于随。」",
-            "「路漫漫其修远兮，吾将上下而求索。」",
-            "「昨夜西风凋碧树，独上高楼，望尽天涯路。」",
-            "「衣带渐宽终不悔，为伊消得人憔悴。」",
+            ""A craftsman who wants to do good work must first sharpen his tools."",
+            ""A journey of a thousand miles begins with a single step."",
+            ""Unity of knowledge and action leads to great distances."",
+            ""Mastery comes from diligence; ruin from idleness."",
+            ""The road ahead is long and far; I shall search high and low."",
+            ""Last night the west wind withered the green trees; I climbed alone to the high tower, gazing to the end of the road."",
+            ""The sash grows ever looser, yet I have no regrets — for her sake I waste away."",
             ""I searched for her a thousand times, then turned back to find her in the dim lamplight."",
-            "「世事洞明皆学问，人情练达即文章。」",
-            "「纸上得来终觉浅，绝知此事要躬行。」"
+            ""Keen understanding of worldly affairs is wisdom; mastery of human nature is eloquence."",
+            ""Knowledge from books is shallow; true understanding comes from practice.""
         ]
 
         quote = random.choice(wisdom_quotes)
 
-        # 组合内容
+        # Combine content
         result = []
 
-        # 添加核心内容
+        # Add core content
         if selected_points:
             for point in selected_points:
-                # 隐私清理
+                # Privacy scrub
                 point = sanitize_content(point)
                 # Truncate overly long content
                 if len(point) > 40:
                     point = point[:37] + "..."
-                # 每行最多 20 字
+                # Max 20 chars per line
                 if len(point) <= 20:
                     result.append(f"· {point}")
                 else:
-                    # 按 20 字切分
+                    # Split at 20 chars
                     for j in range(0, len(point), 20):
                         chunk = point[j:j+20]
                         if j == 0:
@@ -97,7 +97,7 @@ def extract_memo_from_file(file_path: str) -> str:
                         else:
                             result.append(f"  {chunk}")
 
-        # 添加睿智语录
+        # Add wisdom quote
         if quote:
             if len(quote) <= 20:
                 result.append(f"\n{quote}")
