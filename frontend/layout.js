@@ -1,5 +1,5 @@
 // Star Office UI - 布局与层级配置
-// 所有坐标、depth、资源路径统一管理在这里
+// All coordinates, depth, resource paths unified management here
 // 避免 magic numbers，降低改错风险
 
 // 核心规则：
@@ -49,7 +49,7 @@ const LAYOUT = {
       scale: 0.8
     },
 
-    // Star 在桌前工作（在 desk 下面）
+    // Star works at desk
     starWorking: {
       x: 217,
       y: 333,

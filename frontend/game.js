@@ -1,10 +1,10 @@
-// Star Office UI - 游戏主逻辑
-// 依赖: layout.js（必须在这个之前加载）
+// Star Office UI - Game Main Logic
+// Dependency: layout.js (must load before this)
 
-// 检测浏览器是否支持 WebP
+// Detect browser WebP support
 let supportsWebP = false;
 
-// 方法 1: 使用 canvas 检测
+// Method 1: Use canvas detection
 function checkWebPSupport() {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
@@ -16,7 +16,7 @@ function checkWebPSupport() {
   });
 }
 
-// 方法 2: 使用 image 检测（备用）
+// Method 2: Use image detection (fallback)
 function checkWebPSupportFallback() {
   return new Promise((resolve) => {
     const img = new Image();
@@ -26,9 +26,9 @@ function checkWebPSupportFallback() {
   });
 }
 
-// 获取文件扩展名（根据 WebP 支持情况 + 布局配置的 forcePng）
+// Get file extension (based on WebP support + layout forcePng config)
 function getExt(pngFile) {
-  // star-working-spritesheet.png 太宽了，WebP 不支持，始终用 PNG
+  // star-working-spritesheet.png is too wide, WebP doesn't support it, always use PNG
   if (pngFile === 'star-working-spritesheet.png') {
     return '.png';
   }
@@ -66,7 +66,7 @@ async function loadMemo() {
       memoDate.textContent = data.date || '';
       memoContent.innerHTML = data.memo.replace(/\n/g, '<br>');
     } else {
-      memoContent.innerHTML = '<div id="memo-placeholder">暂无昨日日记</div>';
+      memoContent.innerHTML = '<div id="memo-placeholder">No yesterday memo yet</div>';
     }
   } catch (e) {
     console.error('加载 memo 失败:', e);
@@ -82,7 +82,7 @@ function updateLoadingProgress() {
     loadingProgressBar.style.width = percent + '%';
   }
   if (loadingText) {
-    loadingText.textContent = `正在加载 Star 的像素办公室... ${percent}%`;
+    loadingText.textContent = `Loading Star's pixel office... ${percent}%`;
   }
 }
 
@@ -100,90 +100,90 @@ function hideLoadingOverlay() {
 }
 
 const STATES = {
-  idle: { name: '待命', area: 'breakroom' },
-  writing: { name: '整理文档', area: 'writing' },
-  researching: { name: '搜索信息', area: 'researching' },
-  executing: { name: '执行任务', area: 'writing' },
-  syncing: { name: '同步备份', area: 'writing' },
-  error: { name: '出错了', area: 'error' }
+  idle: { name: 'Idle', area: 'breakroom' },
+  writing: { name: 'Organizing documents', area: 'writing' },
+  researching: { name: 'Searching info', area: 'researching' },
+  executing: { name: 'Executing task', area: 'writing' },
+  syncing: { name: 'Syncing backup', area: 'writing' },
+  error: { name: 'Error', area: 'error' }
 };
 
 const BUBBLE_TEXTS = {
   idle: [
-    '待命中：耳朵竖起来了',
-    '我在这儿，随时可以开工',
-    '先把桌面收拾干净再说',
-    '呼——给大脑放个风',
-    '今天也要优雅地高效',
-    '等待，是为了更准确的一击',
-    '咖啡还热，灵感也还在',
-    '我在后台给你加 Buff',
-    '状态：静心 / 充电',
-    '小猫说：慢一点也没关系'
+    'Standing by',
+    "I'm here, ready to work",
+    "Let's tidy the desk first",
+    'Taking a quick brain breeze',
+    'Efficient and elegant today too',
+    'Waiting for a more precise strike',
+    'Coffee is still warm, ideas too',
+    'Adding you a backstage buff',
+    'Status: calm / charging',
+    'Kitty says: take your time'
   ],
   writing: [
-    '进入专注模式：勿扰',
-    '先把关键路径跑通',
-    '我来把复杂变简单',
-    '把 bug 关进笼子里',
-    '写到一半，先保存',
-    '把每一步都做成可回滚',
-    '今天的进度，明天的底气',
-    '先收敛，再发散',
-    '让系统变得更可解释',
-    '稳住，我们能赢'
+    'Focus mode: do not disturb',
+    'Let's clear the critical path first',
+    'Making the complex simple',
+    'Putting bugs in a cage',
+    'Halfway done, saving first',
+    'Making every step rollback-able',
+    'Today's progress, tomorrow's confidence',
+    'Converge first, then diverge',
+    'Making the system more explainable',
+    'Steady, we can win'
   ],
   researching: [
-    '我在挖证据链',
-    '让我把信息熬成结论',
-    '找到了：关键在这里',
-    '先把变量控制住',
-    '我在查：它为什么会这样',
-    '把直觉写成验证',
-    '先定位，再优化',
-    '别急，先画因果图'
+    'Digging the evidence chain',
+    'Let me boil info into conclusions',
+    'Found it: key clue here',
+    'Control variables first',
+    'Checking why this happens',
+    'Turn intuition into verification',
+    'Locate first, optimize next',
+    'No rush, draw causality map first'
   ],
   executing: [
-    '执行中：不要眨眼',
-    '把任务切成小块逐个击破',
-    '开始跑 pipeline',
-    '一键推进：走你',
-    '让结果自己说话',
-    '先做最小可行，再做最美版本'
+    'Executing: don't blink',
+    'Split tasks, conquer one by one',
+    'Running pipeline',
+    'One-click push: go!',
+    'Let results speak',
+    'Build MVP first, then craft beauty'
   ],
   syncing: [
-    '同步中：把今天锁进云里',
-    '备份不是仪式，是安全感',
-    '写入中…别断电',
-    '把变更交给时间戳',
-    '云端对齐：咔哒',
-    '同步完成前先别乱动',
-    '把未来的自己从灾难里救出来',
-    '多一份备份，少一份后悔'
+    'Syncing: lock today into the cloud',
+    'Backup is safety, not ceremony',
+    'Writing... don't cut power',
+    'Handing changes to timestamps',
+    'Cloud alignment: click',
+    'Don't shake it before sync finishes',
+    'Saving future self from disasters',
+    'One more backup, one less regret'
   ],
   error: [
-    '警报响了：先别慌',
-    '我闻到 bug 的味道了',
-    '先复现，再谈修复',
-    '把日志给我，我会说人话',
-    '错误不是敌人，是线索',
-    '把影响面圈起来',
-    '先止血，再手术',
-    '我在：马上定位根因',
-    '别怕，这种我见多了',
-    '报警中：让问题自己现形'
+    'Alarm on: stay calm',
+    'I can smell a bug',
+    'Reproduce first, then fix',
+    'Give me logs; I'll translate',
+    'Errors are clues, not enemies',
+    'Circle the impact area',
+    'Stop bleeding, then surgery',
+    'On it: tracing root cause now',
+    'Don't worry, seen this many times',
+    'Alert mode: make the issue reveal itself'
   ],
   cat: [
-    '喵~',
-    '咕噜咕噜…',
-    '尾巴摇一摇',
-    '晒太阳最开心',
-    '有人来看我啦',
-    '我是这个办公室的吉祥物',
-    '伸个懒腰',
-    '今天的罐罐准备好了吗',
-    '呼噜呼噜',
-    '这个位置视野最好'
+    'Meow~',
+    'Purr purr...',
+    'Tail wiggle',
+    'Sunbathing is the best',
+    'Someone came to see me!',
+    'I'm the office mascot',
+    'Big stretch~',
+    'Is today's snack ready yet?',
+    'Rrrrr purr...',
+    'Best view spot secured'
   ]
 };
 
@@ -220,7 +220,7 @@ const NAME_TAG_COLORS = {
   default: 0x1f2937
 };
 
-// breakroom / writing / error 区域的 agent 分布位置（多 agent 时错开）
+// Agent distribution positions in breakroom/writing/error areas（多 agent 时错开）
 const AREA_POSITIONS = {
   breakroom: [
     { x: 620, y: 180 },
@@ -374,7 +374,7 @@ function create() {
   const plaqueY = LAYOUT.plaque.y;
   const plaqueBg = game.add.rectangle(plaqueX, plaqueY, LAYOUT.plaque.width, LAYOUT.plaque.height, 0x5d4037);
   plaqueBg.setStrokeStyle(3, 0x3e2723);
-  const plaqueText = game.add.text(plaqueX, plaqueY, '海辛小龙虾的办公室', {
+  const plaqueText = game.add.text(plaqueX, plaqueY, 'Temple of SumoDeus', {
     fontFamily: 'ArkPixel, monospace',
     fontSize: '18px',
     fill: '#ffd700',
@@ -485,7 +485,7 @@ function create() {
     window.flowerSprite.setFrame(next);
   });
 
-  // === Star 在桌前工作（来自 LAYOUT）===
+  // === Star working at desk (from LAYOUT) ===
   this.anims.create({
     key: 'star_working',
     frames: this.anims.generateFrameNumbers('star_working', { start: 0, end: 191 }),
@@ -568,7 +568,7 @@ function create() {
   fetchStatus();
   fetchAgents();
 
-  // 可选调试：仅在显式开启 debug 模式时渲染测试用尼卡 agent
+  // Optional debug: render test Nika agent only when debug mode explicitly enabled
   let debugAgents = false;
   try {
     if (typeof window !== 'undefined') {
@@ -591,7 +591,7 @@ function create() {
       name: '尼卡',
       isMain: false,
       state: 'writing',
-      detail: '在画像素画...',
+      detail: 'Drawing pixel art...',
       area: 'writing',
       authStatus: 'approved',
       updated_at: new Date().toISOString()
@@ -608,7 +608,7 @@ function create() {
         name: '尼卡',
         isMain: false,
         state: window.testNikaState,
-        detail: '在画像素画...',
+        detail: 'Drawing pixel art...',
         area: areas[window.testNikaState],
         authStatus: 'approved',
         updated_at: new Date().toISOString()
@@ -784,7 +784,7 @@ function fetchStatus() {
       }
     })
     .catch(error => {
-      typewriterTarget = '连接失败，正在重试...';
+      typewriterTarget = 'Connection failed, retrying...';
       typewriterText = '';
       typewriterIndex = 0;
     });
@@ -899,7 +899,7 @@ function showBubble() {
 function showCatBubble() {
   if (!window.catSprite) return;
   if (window.catBubble) { window.catBubble.destroy(); window.catBubble = null; }
-  const texts = BUBBLE_TEXTS.cat || ['喵~', '咕噜咕噜…'];
+  const texts = BUBBLE_TEXTS.cat || ['Meow~', 'Purr purr...'];
   const text = texts[Math.floor(Math.random() * texts.length)];
   const anchorX = window.catSprite.x;
   const anchorY = window.catSprite.y - 60;
@@ -925,7 +925,7 @@ function fetchAgents() {
         areaSlots[area] = (areaSlots[area] || 0) + 1;
         renderAgent(agent);
       }
-      // 移除不再存在的 agent
+      // Remove agents that no longer exist
       const currentIds = new Set(data.map(a => a.agentId));
       for (let id in agents) {
         if (!currentIds.has(id)) {
@@ -954,7 +954,7 @@ function renderAgent(agent) {
   const authStatus = agent.authStatus || 'pending';
   const isMain = !!agent.isMain;
 
-  // 获取这个 agent 在区域里的位置
+  // Get this agent's position in the area
   const pos = getAreaPosition(area, agent._slotIndex || 0);
   const baseX = pos.x;
   const baseY = pos.y;

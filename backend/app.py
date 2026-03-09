@@ -59,7 +59,7 @@ HOME_FAVORITES_INDEX_FILE = os.path.join(HOME_FAVORITES_DIR, "index.json")
 HOME_FAVORITES_MAX = 30
 ASSET_POSITIONS_FILE = os.path.join(ROOT_DIR, "asset-positions.json")
 
-# 性能保护：默认关闭“每次打开页面随机换背景”，避免首页首屏被磁盘复制拖慢
+# 性能保护：默认关闭"每次打开页面随机换背景"，避免首页首屏被磁盘复制拖慢
 AUTO_ROTATE_HOME_ON_PAGE_OPEN = (os.getenv("AUTO_ROTATE_HOME_ON_PAGE_OPEN", "0").strip().lower() in {"1", "true", "yes", "on"})
 AUTO_ROTATE_MIN_INTERVAL_SECONDS = int(os.getenv("AUTO_ROTATE_MIN_INTERVAL_SECONDS", "60"))
 _last_home_rotate_at = 0
@@ -143,7 +143,7 @@ def add_no_cache_headers(response):
 # Default state
 DEFAULT_STATE = {
     "state": "idle",
-    "detail": "等待任务中...",
+    "detail": "Waiting for task...",
     "progress": 0,
     "updated_at": datetime.now().isoformat()
 }
@@ -185,7 +185,7 @@ def load_state():
                 age = (datetime.now() - dt).total_seconds()
             if age > ttl:
                 state["state"] = "idle"
-                state["detail"] = "待命中（自动回到休息区）"
+                state["detail"] = "On standby (auto-returning to breakroom)"
                 state["progress"] = 0
                 state["updated_at"] = datetime.now().isoformat()
                 # persist the auto-idle so every client sees it consistently
@@ -292,7 +292,7 @@ DEFAULT_AGENTS = [
         "name": "Star",
         "isMain": True,
         "state": "idle",
-        "detail": "待命中，随时准备为你服务",
+        "detail": "On standby, ready to serve",
         "updated_at": datetime.now().isoformat(),
         "area": "breakroom",
         "source": "local",
@@ -628,7 +628,7 @@ def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, heig
     if not style_hint:
         style_hint = theme
 
-    # 默认使用更稳妥的 quality 档，避免 fast 模型在部分 API 通道不可用
+    # Default to more stable quality mode, avoid fast model not available on some API channels
     mode = (speed_mode or "quality").strip().lower()
     if mode not in {"fast", "quality"}:
         mode = "quality"
@@ -644,7 +644,7 @@ def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, heig
         gen_width, gen_height = width, height
         ref_width, ref_height = width, height
 
-    # 同时规避可能触发 400 的特殊能力参数：
+    # Also avoid triggering 400 with special capability parameters:
     # 仅 nanobanana-2 走 aspect-ratio，nanobanana-pro 交给模型默认比例（后续再标准化到 1280x720）
     allow_aspect_ratio = (preferred_user_model == "nanobanana-2")
 
@@ -769,7 +769,7 @@ def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, heig
 
     gen_path = files[0]
     if not os.path.exists(gen_path):
-        raise RuntimeError("生图文件不存在")
+        raise RuntimeError("Generated file not found")
 
     if Image is None:
         raise RuntimeError("Pillow 不可用，无法做尺寸标准化")
@@ -780,7 +780,7 @@ def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, heig
         if mode == "fast":
             im = im.resize((gen_width, gen_height), Image.Resampling.LANCZOS)
             if (gen_width, gen_height) != (width, height):
-                # fast 的放大改为 LANCZOS，牺牲少量速度换更高细节
+                # fast upscaling changed to LANCZOS, sacrifice small speed for higher detail
                 im = im.resize((width, height), Image.Resampling.LANCZOS)
             im.save(out_webp_path, "WEBP", quality=96, method=6)
         else:
@@ -958,7 +958,7 @@ def join_agent():
         # key 可复用：不再因为 used=true 拒绝
 
         with join_lock:
-            # 在锁内重新读取，避免并发请求都基于同一旧快照通过校验
+            # Re-read inside lock to avoid concurrent requests passing validation based on same old snapshot
             keys_data = load_join_keys()
             key_item = next((k for k in keys_data.get("keys", []) if k.get("key") == join_key), None)
             if not key_item:
@@ -976,8 +976,8 @@ def join_agent():
 
             agents = load_agents_state()
 
-            # 并发上限：同一个 key “同时在线”最多 3 个。
-            # 在线判定：lastPushAt/updated_at 在 5 分钟内；否则视为 offline，不计入并发。
+            # Concurrency limit: max 3 concurrent connections per key.
+            # Online判定: lastPushAt/updated_at within 5 minutes; otherwise considered offline, not counted.
             now = datetime.now()
             existing = next((a for a in agents if a.get("name") == name and not a.get("isMain")), None)
             existing_id = existing.get("agentId") if existing else None
@@ -1068,7 +1068,7 @@ def join_agent():
             key_item["reusable"] = True
 
             # 拿到有效 key 直接批准，不再等待主人手动点击
-            # （状态已在上面 existing/new 分支写入）
+            # (State already written in above existing/new branch)
             save_agents_state(agents)
             save_join_keys(keys_data)
 
@@ -1103,7 +1103,7 @@ def leave_agent():
             target = next((a for a in agents if a.get("name") == name and not a.get("isMain")), None)
 
         if not target:
-            return jsonify({"ok": False, "msg": "没有找到要离开的 agent"}), 404
+            return jsonify({"ok": False, "msg": "Agent not found to leave"}), 404
 
         join_key = target.get("joinKey")
         new_agents = [a for a in agents if a.get("isMain") or a.get("agentId") != target.get("agentId")]
@@ -1222,31 +1222,31 @@ def health():
 
 @app.route("/yesterday-memo", methods=["GET"])
 def get_yesterday_memo():
-    """获取昨日小日记"""
+    """Get yesterday's memo"""
     try:
-        # 先尝试找昨天的文件
+        # Try to find yesterday's file first
         yesterday_str = get_yesterday_date_str()
         yesterday_file = os.path.join(MEMORY_DIR, f"{yesterday_str}.md")
-        
+
         target_file = None
         target_date = yesterday_str
-        
+
         if os.path.exists(yesterday_file):
             target_file = yesterday_file
         else:
-            # 如果昨天没有，找最近的一天
+            # If yesterday not found, find most recent day
             if os.path.exists(MEMORY_DIR):
                 files = [f for f in os.listdir(MEMORY_DIR) if f.endswith(".md") and re.match(r"\d{4}-\d{2}-\d{2}\.md", f)]
                 if files:
                     files.sort(reverse=True)
-                    # 跳过今天的（如果存在）
+                    # Skip today (if exists)
                     today_str = datetime.now().strftime("%Y-%m-%d")
                     for f in files:
                         if f != f"{today_str}.md":
                             target_file = os.path.join(MEMORY_DIR, f)
                             target_date = f.replace(".md", "")
                             break
-        
+
         if target_file and os.path.exists(target_file):
             memo_content = extract_memo_from_file(target_file)
             return jsonify({
@@ -1257,7 +1257,7 @@ def get_yesterday_memo():
         else:
             return jsonify({
                 "success": False,
-                "msg": "没有找到昨日日记"
+                "msg": "No yesterday memo found"
             })
     except Exception as e:
         return jsonify({
@@ -1290,7 +1290,7 @@ def set_state_endpoint():
 @app.route("/assets/template.zip", methods=["GET"])
 def assets_template_download():
     if not os.path.exists(ASSET_TEMPLATE_ZIP):
-        return jsonify({"ok": False, "msg": "模板包不存在，请先生成"}), 404
+        return jsonify({"ok": False, "msg": "Template package not found, please generate first"}), 404
     return send_from_directory(ROOT_DIR, "assets-replace-template.zip", as_attachment=True)
 
 
@@ -1395,7 +1395,7 @@ def assets_generate_rpg_background():
 
         target = FRONTEND_PATH / "office_bg_small.webp"
         if not target.exists():
-            return jsonify({"ok": False, "msg": "office_bg_small.webp 不存在"}), 404
+            return jsonify({"ok": False, "msg": "office_bg_small.webp not found"}), 404
 
         # Pre-flight checks that can fail fast (before spawning thread)
         runtime_cfg = load_runtime_config()
@@ -1409,7 +1409,7 @@ def assets_generate_rpg_background():
         with _bg_tasks_lock:
             for tid, task in _bg_tasks.items():
                 if task.get("status") == "pending":
-                    return jsonify({"ok": True, "async": True, "task_id": tid, "msg": "已有生图任务进行中，请等待完成"}), 200
+                    return jsonify({"ok": True, "async": True, "task_id": tid, "msg": "Image generation task already in progress, please wait"}), 200
 
         # Create async task
         import string as _string
@@ -1437,10 +1437,10 @@ def assets_generate_rpg_background_poll():
     with _bg_tasks_lock:
         task = _bg_tasks.get(task_id)
     if not task:
-        return jsonify({"ok": False, "msg": "任务不存在"}), 404
+        return jsonify({"ok": False, "msg": "Task not found"}), 404
     status = task.get("status", "pending")
     if status == "pending":
-        return jsonify({"ok": True, "status": "pending", "msg": "生图进行中..."})
+        return jsonify({"ok": True, "status": "pending", "msg": "Image generation in progress..."})
     elif status == "done":
         # Clean up task after delivering result
         with _bg_tasks_lock:
@@ -1463,15 +1463,15 @@ def assets_restore_reference_background():
     try:
         target = FRONTEND_PATH / "office_bg_small.webp"
         if not target.exists():
-            return jsonify({"ok": False, "msg": "office_bg_small.webp 不存在"}), 404
+            return jsonify({"ok": False, "msg": "office_bg_small.webp not found"}), 404
         if not os.path.exists(ROOM_REFERENCE_IMAGE):
-            return jsonify({"ok": False, "msg": "参考图不存在"}), 404
+            return jsonify({"ok": False, "msg": "Reference image not found"}), 404
 
         # 备份当前底图
         bak = target.with_suffix(target.suffix + ".bak")
         shutil.copy2(target, bak)
 
-        # 快速路径：若参考图已是 1280x720 的 webp，直接拷贝（秒级）
+        # Fast path: If reference image is already 1280x720 webp, copy directly (seconds)
         ref_ext = os.path.splitext(ROOM_REFERENCE_IMAGE)[1].lower()
         fast_copied = False
         if ref_ext == '.webp':
@@ -1483,7 +1483,7 @@ def assets_restore_reference_background():
             except Exception:
                 fast_copied = False
 
-        # 慢路径：仅在必要时重编码
+        # Slow path: re-encode only when necessary
         if not fast_copied:
             if Image is None:
                 return jsonify({"ok": False, "msg": "Pillow 不可用"}), 500
@@ -1511,7 +1511,7 @@ def assets_restore_last_generated_background():
     try:
         target = FRONTEND_PATH / "office_bg_small.webp"
         if not target.exists():
-            return jsonify({"ok": False, "msg": "office_bg_small.webp 不存在"}), 404
+            return jsonify({"ok": False, "msg": "office_bg_small.webp not found"}), 404
 
         if not os.path.isdir(BG_HISTORY_DIR):
             return jsonify({"ok": False, "msg": "暂无历史底图"}), 404
@@ -1588,7 +1588,7 @@ def assets_home_favorites_save_current():
     try:
         src = FRONTEND_PATH / "office_bg_small.webp"
         if not src.exists():
-            return jsonify({"ok": False, "msg": "office_bg_small.webp 不存在"}), 404
+            return jsonify({"ok": False, "msg": "office_bg_small.webp not found"}), 404
 
         _ensure_home_favorites_index()
         ts = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -1639,7 +1639,7 @@ def assets_home_favorites_delete():
         items = idx.get("items") or []
         hit = next((x for x in items if (x.get("id") or "") == item_id), None)
         if not hit:
-            return jsonify({"ok": False, "msg": "收藏项不存在"}), 404
+            return jsonify({"ok": False, "msg": "Favorite item not found"}), 404
 
         rel = hit.get("path") or ""
         abs_path = os.path.join(ROOT_DIR, rel)
@@ -1671,15 +1671,15 @@ def assets_home_favorites_apply():
         items = idx.get("items") or []
         hit = next((x for x in items if (x.get("id") or "") == item_id), None)
         if not hit:
-            return jsonify({"ok": False, "msg": "收藏项不存在"}), 404
+            return jsonify({"ok": False, "msg": "Favorite item not found"}), 404
 
         src = os.path.join(ROOT_DIR, hit.get("path") or "")
         if not os.path.exists(src):
-            return jsonify({"ok": False, "msg": "收藏文件不存在"}), 404
+            return jsonify({"ok": False, "msg": "Favorite file not found"}), 404
 
         target = FRONTEND_PATH / "office_bg_small.webp"
         if not target.exists():
-            return jsonify({"ok": False, "msg": "office_bg_small.webp 不存在"}), 404
+            return jsonify({"ok": False, "msg": "office_bg_small.webp not found"}), 404
 
         bak = target.with_suffix(target.suffix + ".bak")
         shutil.copy2(str(target), str(bak))
@@ -1848,7 +1848,7 @@ def assets_restore_default():
             return jsonify({"ok": False, "msg": "非法 path"}), 400
 
         if not target.exists():
-            return jsonify({"ok": False, "msg": "目标文件不存在"}), 404
+            return jsonify({"ok": False, "msg": "Target file not found"}), 404
 
         root, ext = os.path.splitext(str(target))
         default_path = root + ext + ".default"
@@ -1919,11 +1919,11 @@ def assets_upload():
             return jsonify({"ok": False, "msg": "仅允许上传图片/美术资源类型"}), 400
 
         if not target.exists():
-            return jsonify({"ok": False, "msg": "目标文件不存在，请先从 /assets/list 选择 path"}), 404
+            return jsonify({"ok": False, "msg": "Target file not found，请先从 /assets/list 选择 path"}), 404
 
         target.parent.mkdir(parents=True, exist_ok=True)
 
-        # 首次上传前固化默认资产快照，供“重置为默认资产”使用
+        # 首次上传前固化默认资产快照，供"重置为默认资产"使用
         default_snap = Path(str(target) + ".default")
         if not default_snap.exists():
             try:
@@ -1947,7 +1947,7 @@ def assets_upload():
                 frame_w = int(request.form.get("frame_w") or (in_w or 64))
                 frame_h = int(request.form.get("frame_h") or (in_h or 64))
 
-                # 如果是静态图上传到精灵表目标，按网格切片而不是整图覆盖
+                # If static image uploaded to spritesheet target, slice by grid not whole image overlay
                 if not (ext_name.endswith(".gif") or ext_name.endswith(".webp")) and Image is not None:
                     try:
                         with Image.open(src_path) as sim:
@@ -1963,7 +1963,7 @@ def assets_upload():
                                 raise RuntimeError("静态图尺寸与帧规格不匹配")
 
                             cropped = sim.crop((0, 0, sheet_w, sheet_h))
-                            # 目标是 webp 仍按无损保存，避免像素损失
+                            # Target webp saved lossless to avoid pixel loss
                             if target.suffix.lower() == ".webp":
                                 cropped.save(str(target), "WEBP", lossless=True, quality=100, method=6)
                             else:
@@ -1990,7 +1990,7 @@ def assets_upload():
                     finally:
                         pass
 
-                # 默认：优先保留输入帧尺寸；若前端传了强制值则按前端。
+                # Default: preserve input frame size; use frontend forced value if provided.
                 preserve_original_val = request.form.get("preserve_original")
                 if preserve_original_val is None:
                     preserve_original = True

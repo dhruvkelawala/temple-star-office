@@ -53,9 +53,9 @@ def extract_memo_from_file(file_path: str) -> str:
                 core_points.append(line)
 
         if not core_points:
-            return "「昨日无事记录」\n\n若有恒，何必三更眠五更起；最无益，莫过一日曝十日寒。"
+            return ""No events recorded yesterday"\n\nIf you have persistence, why sleep late and wake early? Nothing is more useless than sporadic effort."
 
-        # 从核心内容中提取 2-3 个关键点
+        # Extract key points from content 2-3 个关键点
         selected_points = core_points[:3]
 
         # 睿智语录库
@@ -67,7 +67,7 @@ def extract_memo_from_file(file_path: str) -> str:
             "「路漫漫其修远兮，吾将上下而求索。」",
             "「昨夜西风凋碧树，独上高楼，望尽天涯路。」",
             "「衣带渐宽终不悔，为伊消得人憔悴。」",
-            "「众里寻他千百度，蓦然回首，那人却在，灯火阑珊处。」",
+            ""I searched for her a thousand times, then turned back to find her in the dim lamplight."",
             "「世事洞明皆学问，人情练达即文章。」",
             "「纸上得来终觉浅，绝知此事要躬行。」"
         ]
@@ -82,7 +82,7 @@ def extract_memo_from_file(file_path: str) -> str:
             for point in selected_points:
                 # 隐私清理
                 point = sanitize_content(point)
-                # 截断过长的内容
+                # Truncate overly long content
                 if len(point) > 40:
                     point = point[:37] + "..."
                 # 每行最多 20 字
@@ -113,4 +113,4 @@ def extract_memo_from_file(file_path: str) -> str:
 
     except Exception as e:
         print(f"extract_memo_from_file failed: {e}")
-        return "「昨日记录加载失败」\n\n「往者不可谏，来者犹可追。」"
+        return "「Failed to load yesterday's record」\n\n「What is past cannot be recalled, but the future can still be pursued.」"
