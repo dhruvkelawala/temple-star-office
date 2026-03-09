@@ -13,7 +13,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #1a1a2e;
+            background: #1a2744;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -61,7 +61,7 @@
             /* 再兜底一次：即使外层高度变化，也不要拉伸变形 */
             object-fit: contain;
             /* 边框改为直接贴合画布内部，避免"框比地图大" */
-            box-shadow: inset 0 0 0 4px #64477d;
+            box-shadow: inset 0 0 0 4px #c9a84c, 0 0 20px rgba(201,168,76,0.15);
             position: relative;
             z-index: 10;
         }
@@ -70,7 +70,7 @@
             position: absolute;
             inset: 0;
             z-index: 5;
-            background: radial-gradient(ellipse at center, #2a2a45 0%, #1a1a2e 65%, #151522 100%);
+            background: radial-gradient(ellipse at center, #1e3255 0%, #1a2744 65%, #0d1a33 100%);
             overflow: hidden;
         }
         #game-skeleton::before {
@@ -102,7 +102,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1a1a2e;
+            background: #1a2744;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -117,13 +117,13 @@
         #loading-progress-container {
             width: 300px;
             height: 20px;
-            background: #333;
-            border: 2px solid #555;
+            background: #1e3255;
+            border: 2px solid #c9a84c;
             border-radius: 4px;
         }
         #loading-progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #e94560, #ffd700);
+            background: linear-gradient(90deg, #c9a84c, #f0c040);
             width: 0%;
             transition: width 0.3s ease;
         }
@@ -253,7 +253,7 @@
             max-width: 92vw;
             height: 100vh;
             height: 100dvh;
-            background: #111827;
+            background: #0f1b2d;
             border-left: 2px solid #22c55e;
             box-shadow: -8px 0 24px rgba(0,0,0,0.45);
             transition: right 0.25s ease;
@@ -301,7 +301,7 @@
         }
         #asset-list::-webkit-scrollbar { width: 8px; }
         #asset-list::-webkit-scrollbar-track { background: #0b1220; }
-        #asset-list::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 0; border: 1px solid #111827; }
+        #asset-list::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 0; border: 1px solid #0f1b2d; }
         #asset-upload-panel {
             position: sticky;
             left: 8px;
@@ -336,9 +336,9 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            background: #111827;
+            background: #0f1b2d;
             color: #e5e7eb;
-            border: 1px solid #334155;
+            border: 1px solid #2d3d5c;
         }
         .asset-upload-grid > button:hover {
             background: #1f2937;
@@ -347,7 +347,7 @@
         }
         .asset-item {
             border: 1px solid rgba(148, 163, 184, 0.16);
-            background: #0f172a;
+            background: #111e35;
             border-radius: 8px;
             padding: 8px;
             display: grid;
@@ -407,9 +407,9 @@
             align-items: center;
             min-height: 20px;
         }
-        .asset-preview-img { width:100%; height:92px; object-fit:contain; background:#111827; border:1px solid rgba(148, 163, 184, 0.14); border-radius:6px; }
+        .asset-preview-img { width:100%; height:92px; object-fit:contain; background:#0f1b2d; border:1px solid rgba(148, 163, 184, 0.14); border-radius:6px; }
         .home-fav-list { display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; }
-        .home-fav-item { min-width:126px; max-width:126px; border:0; border-radius:8px; background:#111827; padding:6px; box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12); }
+        .home-fav-item { min-width:126px; max-width:126px; border:0; border-radius:8px; background:#0f1b2d; padding:6px; box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12); }
         .home-fav-item img { width:100%; height:70px; object-fit:cover; border:1px solid rgba(148, 163, 184, 0.14); border-radius:6px; image-rendering:pixelated; }
         .home-fav-meta { color:#9ca3af; font-size:10px; margin-top:4px; line-height:1.3; min-height:24px; }
         .home-fav-item button { width:100%; margin-top:4px; border:1px solid rgba(148, 163, 184, 0.20); background:#1f2937; color:#fff; border-radius:6px; padding:4px 6px; font-family:'ArkPixel', monospace; cursor:pointer; }
@@ -497,10 +497,10 @@
         }
         #asset-broker-panel {
             margin-top:0;
-            border:1px dashed #334155;
+            border:1px dashed #2d3d5c;
             border-radius:8px;
             padding:8px;
-            background:#0f172a;
+            background:#111e35;
             max-height:0;
             opacity:0;
             transform:translateY(-6px);
@@ -518,7 +518,7 @@
         #asset-broker-prompt {
             width:100%; min-height:66px; resize:vertical;
             padding:8px; border-radius:6px;
-            border:1px solid #334155; background:#111827; color:#e5e7eb;
+            border:1px solid #2d3d5c; background:#0f1b2d; color:#e5e7eb;
             font-family:'ArkPixel', monospace; font-size:12px;
             box-sizing:border-box;
         }
@@ -789,7 +789,7 @@
             padding-right: 4px;
         }
         #guest-agent-list::-webkit-scrollbar { width: 6px; }
-        #guest-agent-list::-webkit-scrollbar-track { background: #1a1a2e; }
+        #guest-agent-list::-webkit-scrollbar-track { background: #1a2744; }
         #guest-agent-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
         .guest-agent-item {
             display: flex;
@@ -895,7 +895,7 @@
         }
         #memo-panel.no-bg {
             background-image: none !important;
-            background-color: #111827;
+            background-color: #0f1b2d;
         }
         #memo-title {
             color: #1a1b2f;
@@ -935,7 +935,7 @@
             width: 6px;
         }
         #memo-content::-webkit-scrollbar-track {
-            background: #1a1a2e;
+            background: #1a2744;
         }
         #memo-content::-webkit-scrollbar-thumb {
             background: #444;
@@ -1131,6 +1131,28 @@
     </style>
 </head>
 <body>
+    <!-- Temple header -->
+    <div id="temple-header" style="
+        width: 1280px;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        background: linear-gradient(90deg, #0d1a33 0%, #1a2744 40%, #1e3255 60%, #0d1a33 100%);
+        border: 1px solid #c9a84c;
+        border-radius: 4px;
+        margin-bottom: 4px;
+        box-shadow: 0 0 12px rgba(201,168,76,0.2);
+    ">
+        <div style="color:#f0c040;font-family:ArkPixel,monospace;font-size:16px;letter-spacing:2px;">
+            𓂀 TEMPLE OF SUMODEUS 𓂀
+        </div>
+        <div id="temple-agent-count" style="color:#b8a882;font-family:ArkPixel,monospace;font-size:12px;">
+            9 AGENTS ONLINE
+        </div>
+    </div>
+
     <!-- Loading overlay -->
     <div id="loading-overlay">
         <div id="loading-text">Loading Temple of SumoDeus...</div>
@@ -1221,7 +1243,7 @@
                         <div class="asset-toolbar" style="margin-top:6px; gap:8px; align-items:center; justify-content:flex-start;">
                             <span id="speed-mode-label" class="asset-sub" style="min-width:62px;">Mode</span>
                             <button id="speed-fast-btn" type="button" onclick="setSpeedMode('fast')" style="background:#22c55e;color:#052e16;border-color:#16a34a;">🍌2</button>
-                            <button id="speed-quality-btn" type="button" onclick="setSpeedMode('quality')" style="background:#334155;color:#e5e7eb;border-color:#475569;">🍌Pro</button>
+                            <button id="speed-quality-btn" type="button" onclick="setSpeedMode('quality')" style="background:#2d3d5c;color:#e5e7eb;border-color:#475569;">🍌Pro</button>
                         </div>
                         <details id="asset-gemini-panel" style="margin-top:6px; border:0; border-top:1px solid rgba(148,163,184,.18); border-radius:0; padding:8px 0 0; background:transparent;">
                             <summary id="gemini-panel-summary" style="cursor:pointer; color:#cbd5e1;">🔐 API Settings (collapsible)</summary>
@@ -1584,10 +1606,10 @@
             const qBtn = document.getElementById('speed-quality-btn');
             if (!fastBtn || !qBtn) return;
             const fastOn = speedMode === 'fast';
-            fastBtn.style.background = fastOn ? '#22c55e' : '#334155';
+            fastBtn.style.background = fastOn ? '#22c55e' : '#2d3d5c';
             fastBtn.style.color = fastOn ? '#052e16' : '#e5e7eb';
             fastBtn.style.borderColor = fastOn ? '#16a34a' : '#475569';
-            qBtn.style.background = fastOn ? '#334155' : '#22c55e';
+            qBtn.style.background = fastOn ? '#2d3d5c' : '#22c55e';
             qBtn.style.color = fastOn ? '#e5e7eb' : '#052e16';
             qBtn.style.borderColor = fastOn ? '#475569' : '#16a34a';
         }
