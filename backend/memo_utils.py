@@ -53,23 +53,23 @@ def extract_memo_from_file(file_path: str) -> str:
                 core_points.append(line)
 
         if not core_points:
-            return ""No events recorded yesterday"\n\nIf you have persistence, why sleep late and wake early? Nothing is more useless than sporadic effort."
+            return "No events recorded yesterday.\n\nIf you have persistence, why sleep late and wake early? Nothing is more useless than sporadic effort."
 
         # Extract key points from content 2-3 个关键点
         selected_points = core_points[:3]
 
         # Wisdom quotes
         wisdom_quotes = [
-            ""A craftsman who wants to do good work must first sharpen his tools."",
-            ""A journey of a thousand miles begins with a single step."",
-            ""Unity of knowledge and action leads to great distances."",
-            ""Mastery comes from diligence; ruin from idleness."",
-            ""The road ahead is long and far; I shall search high and low."",
-            ""Last night the west wind withered the green trees; I climbed alone to the high tower, gazing to the end of the road."",
-            ""The sash grows ever looser, yet I have no regrets — for her sake I waste away."",
-            ""I searched for her a thousand times, then turned back to find her in the dim lamplight."",
-            ""Keen understanding of worldly affairs is wisdom; mastery of human nature is eloquence."",
-            ""Knowledge from books is shallow; true understanding comes from practice.""
+            "A craftsman who wants to do good work must first sharpen his tools.",
+            "A journey of a thousand miles begins with a single step.",
+            "Unity of knowledge and action leads to great distances.",
+            "Mastery comes from diligence; ruin from idleness.",
+            "The road ahead is long and far; I shall search high and low.",
+            "Last night the west wind withered the green trees; I climbed alone to the high tower.",
+            "The sash grows ever looser, yet I have no regrets -- for her sake I waste away.",
+            "I searched a thousand times, then turned back to find her in the dim lamplight.",
+            "Keen understanding of worldly affairs is wisdom; mastery of human nature is eloquence.",
+            "Knowledge from books is shallow; true understanding comes from practice.",
         ]
 
         quote = random.choice(wisdom_quotes)
