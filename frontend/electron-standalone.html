@@ -4063,7 +4063,7 @@ function toggleBrokerPanel() {
             }
         }
 
-        // Guest Agent 离开房间
+        // Guest Agent Leave
         function removeGuestSpriteByName(name) {
             const target = guestAgents.find(a => (a.name || '') === name);
             if (target && guestSprites[target.agentId]) {
@@ -4095,17 +4095,17 @@ function toggleBrokerPanel() {
                         delete guestBubbles[agentId];
                     }
                     fetchGuestAgents();
-                    alert((name || agentId) + ' 已离开房间');
+                    alert((name || agentId) + ' 已Leave');
                 } else {
                     // Allow local hiding even if demo agent not in backend
                     if (DEMO_MODE && (name === '尼卡' || name === '水星')) {
                         hiddenDemoNames.add(name);
                         removeGuestSpriteByName(name);
                         renderGuestAgentList();
-                        alert(name + ' 已离开房间（demo）');
+                        alert(name + ' 已Leave（demo）');
                         return;
                     }
-                    alert('离开失败：' + (data.msg || '未知错误'));
+                    alert('Failed to leave:' + (data.msg || '未知错误'));
                 }
             }).catch(error => {
                 alert('请求失败：' + error);
@@ -4198,7 +4198,7 @@ function toggleBrokerPanel() {
                 const stateText = stateMap[state] || state;
                 const subtitle = `${statusText} · ${stateText}`;
 
-                const pendingActions = `<button onclick="alert('Swap skill feature coming soon')">交换skill</button><button class="leave-btn" onclick="leaveGuestAgent('${agent.agentId}','${name}')">离开房间</button>`;
+                const pendingActions = `<button onclick="alert('Swap skill feature coming soon')">Swap skill</button><button class="leave-btn" onclick="leaveGuestAgent('${agent.agentId}','${name}')">Leave</button>`;
 
                 return `
                   <div class="guest-agent-item" data-name="${name}">

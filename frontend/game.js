@@ -969,20 +969,68 @@ function renderAgent(agent) {
   if (authStatus === 'rejected') alpha = 0.4;
   if (authStatus === 'offline') alpha = 0.5;
 
-  if (!agents[agentId]) {
-    // 新建 agent
-    const container = game.add.container(baseX, baseY);
-    container.setDepth(1200 + (isMain ? 100 : 0)); // 放到最顶层！
+  // Map agent name → sprite key (case-insensitive)
+  const AGENT_SPRITE_MAP = {
+    sumodeus: 'agent_sumodeus', star: 'agent_sumodeus',
+    zeus: 'agent_zeus',
+    ibis: 'agent_ibis',
+    atum: 'agent_atum',
+    athena: 'agent_athena',
+    maat: 'agent_maat',
+    sphinx: 'agent_sphinx',
+    hathor: 'agent_hathor',
+    osiris: 'agent_osiris',
+  };
+  const spriteKey = AGENT_SPRITE_MAP[(name || '').toLowerCase()] || null;
+  console.log('renderAgent:', name, '-> spriteKey:', spriteKey, 'isMain:', isMain, 'game:', !!game);
 
-    // 像素小人：用星星图标，更明显
-    const starIcon = game.add.text(0, 0, '⭐', {
-      fontFamily: 'ArkPixel, monospace',
-      fontSize: '32px'
-    }).setOrigin(0.5);
+  if (!game) {
+    console.log('ERROR: game not initialized yet');
+    return;
+  }
+
+  if (!agents[agentId]) {
+    // New agent — create container
+    const container = game.add.container(baseX, baseY);
+    container.setDepth(1200 + (isMain ? 100 : 0));
+
+    // Agent sprite: use deity spritesheet if available, fallback to ⭐ emoji
+    let starIcon;
+    // Always try sprite - game.textures.exists() can return false prematurely
+    if (spriteKey) {
+      try {
+        starIcon = game.add.sprite(0, 0, spriteKey, 0);
+        starIcon.setScale(0.35);
+        starIcon.setOrigin(0.5, 0.85);
+        // Idle animation: 6 frames at 6fps
+        if (!game.anims.exists(spriteKey + '_idle')) {
+          game.anims.create({
+            key: spriteKey + '_idle',
+            frames: game.anims.generateFrameNumbers(spriteKey, { start: 0, end: 5 }),
+            frameRate: 6,
+            repeat: -1
+          });
+        }
+        starIcon.play(spriteKey + '_idle');
+      } catch(e) {
+        console.log('Sprite load failed for', spriteKey, e);
+        starIcon = game.add.text(0, 0, '⭐', {
+          fontFamily: 'ArkPixel, monospace',
+          fontSize: '32px'
+        }).setOrigin(0.5);
+      }
+    } else {
+      starIcon = game.add.text(0, 0, '⭐', {
+        fontFamily: 'ArkPixel, monospace',
+        fontSize: '32px'
+      }).setOrigin(0.5);
+    }
     starIcon.name = 'starIcon';
 
     // 名字标签（漂浮）
-    const nameTag = game.add.text(0, -36, name, {
+    // Name tag: sit above sprite (sprites are ~90px tall at 0.35 scale, origin 0.85 → top ~-76px)
+    const nameTagY = spriteKey ? -82 : -36;
+    const nameTag = game.add.text(0, nameTagY, name, {
       fontFamily: 'ArkPixel, monospace',
       fontSize: '14px',
       fill: '#' + nameColor.toString(16).padStart(6, '0'),
@@ -992,7 +1040,7 @@ function renderAgent(agent) {
     }).setOrigin(0.5);
     nameTag.name = 'nameTag';
 
-    // 状态小点（绿色/黄色/红色）
+    // Status dot
     let dotColor = 0x64748b;
     if (authStatus === 'approved') dotColor = 0x22c55e;
     if (authStatus === 'pending') dotColor = 0xf59e0b;

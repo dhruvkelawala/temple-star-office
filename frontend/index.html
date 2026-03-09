@@ -3087,7 +3087,7 @@ function toggleBrokerPanel() {
             }
         }
 
-        // Guest Agent 离开房间
+        // Guest Agent leave room
         function removeGuestSpriteByName(name) {
             const target = guestAgents.find(a => (a.name || '') === name);
             if (target && guestSprites[target.agentId]) {
@@ -3222,7 +3222,7 @@ function toggleBrokerPanel() {
                 const stateText = stateMap[state] || state;
                 const subtitle = `${statusText} · ${stateText}`;
 
-                const pendingActions = `<button onclick="alert('Swap skill feature coming soon')">Swap skill</button><button class="leave-btn" onclick="leaveGuestAgent('${agent.agentId}','${name}')">离开房间</button>`;
+                const pendingActions = `<button onclick="alert('Swap skill feature coming soon')">Swap skill</button><button class="leave-btn" onclick="leaveGuestAgent('${agent.agentId}','${name}')">Leave</button>`;
 
                 return `
                   <div class="guest-agent-item" data-name="${name}">
@@ -3731,6 +3731,14 @@ function toggleBrokerPanel() {
             // use smaller/new map version provided by user
             this.load.image('office_bg', '/static/office_bg_small.webp?v={{VERSION_TIMESTAMP}}');
             this.load.spritesheet('star_idle', '/static/star-idle-v5.png?v={{VERSION_TIMESTAMP}}', { frameWidth: 256, frameHeight: 256 });
+
+            // Agent deity sprites — 6-frame idle sheets, 256x256 per frame
+            const AGENT_SPRITES = ['sumodeus','zeus','ibis','atum','athena','maat','sphinx','hathor','osiris'];
+            for (const a of AGENT_SPRITES) {
+              console.log('Preload: loading spritesheet agent_' + a);
+              this.load.spritesheet(`agent_${a}`, `/static/${a}-idle-sheet.png?v={{VERSION_TIMESTAMP}}`, { frameWidth: 256, frameHeight: 256 });
+            }
+            totalAssets += AGENT_SPRITES.length;
 
             // Furniture
             this.load.image('sofa_idle', '/static/sofa-idle-v3.png?v={{VERSION_TIMESTAMP}}');
